@@ -3,6 +3,7 @@ import { Component } from 'react';
 import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
+import ContactItem from "./ContactItem";
 
 class App extends Component {
   state = {
@@ -18,9 +19,10 @@ class App extends Component {
   addContacts = data => {
     const { contacts } = this.state;
 
-    const names = contacts.map(contact => contact.name.toLowerCase());
 
-    names.includes(data.name.toLowerCase())
+    contacts.find(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+    )
       ? alert(`${data.name} is already in contact`)
       : this.setState(prevState => ({
           contacts: [data, ...prevState.contacts],
@@ -55,10 +57,10 @@ class App extends Component {
         <ContactForm onSubmit={this.addContacts} />
         <h3 className={s.title}>Contacts</h3>
         <Filter filter={filter} onChange={this.changeFilter} />
-        <ContactList
-          contacts={visibleContact}
-          onDeleteContact={this.deleteContact}
-        />
+        <ContactList>
+          <ContactItem contacts={visibleContact}
+          onDeleteContact={this.deleteContact}/>
+        </ContactList>
       </div>
     );
   }
